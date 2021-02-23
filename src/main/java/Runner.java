@@ -1,9 +1,9 @@
 public class Runner {
     public static void main(String[] args) {
-        hw();
+        System.out.println(hello());
     }
 
-    public static void hw() {
-        System.out.println("Hello. I'am grabber");
+    public static String hello() {
+        return "Hello. I'am grabber";
     }
 }
