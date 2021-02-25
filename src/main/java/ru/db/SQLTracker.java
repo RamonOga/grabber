@@ -29,6 +29,7 @@ public class SQLTracker implements AutoCloseable {
                         rs.getString("descr") ,
                         rs.getString("date")));
             }
+            rs.close();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
