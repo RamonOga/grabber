@@ -3,27 +3,40 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-public class DataBase {
+public class DataBase implements AutoCloseable {
     Properties properties;
     Connection connection;
 
     private DataBase() {
+        initConnection();
     }
 
-    public Connection getConnection() {
-        try (InputStream in = Runner.class.getClassLoader().getResourceAsStream("app.properties")) {
-            Properties properties = new Properties();
-            properties.load(in);
+    public void initConnection() {
+        try {
             Class.forName(properties.getProperty("driver"));
-            Connection connection = DriverManager.getConnection(properties.getProperty("url"),
+            connection = DriverManager.getConnection(properties.getProperty("url"),
                     properties.getProperty("login"),
                     properties.getProperty("password"));
         } catch (Exception e) {
             e.fillInStackTrace();
             System.out.println(e.getMessage());
         }
-        return connection;
+    }
+    public void initProperties(String prop) {
+        try (InputStream in = Runner.class.getClassLoader().getResourceAsStream(prop)) {
+            properties = new Properties();
+            properties.load(in);
+        } catch (Exception e) {
+            e.fillInStackTrace();
+            System.out.println(e.getMessage());
+        }
+
     }
 
-
+    @Override
+    public void close() throws Exception {
+        if (connection != null) {
+            connection.close();
+        }
+    }
 }
