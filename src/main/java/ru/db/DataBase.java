@@ -1,50 +1,48 @@
+package ru.db;
+
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-public class DataBase implements AutoCloseable {
+public class DataBase {
+    private static DataBase dataBase;
     private Properties properties;
     private Connection connection;
-    private static DataBase dataBase;
 
-    private DataBase() {
+    private DataBase(String propertiesPath) {
+        initProperties(propertiesPath);
         initConnection();
     }
 
-    public DataBase getDataBase() {
+    public static DataBase getDataBase(String propertiesPath) {
         if (dataBase == null) {
-            dataBase = new DataBase();
+            dataBase = new DataBase(propertiesPath);
         }
         return dataBase;
     }
 
-    public void initConnection() {
+    private void initConnection() {
         try {
-            Class.forName(properties.getProperty("driver"));
+            Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(properties.getProperty("url"),
                     properties.getProperty("login"),
                     properties.getProperty("password"));
         } catch (Exception e) {
-            e.fillInStackTrace();
-            System.out.println(e.getMessage());
+            System.out.println(e.fillInStackTrace());
         }
     }
-    public void initProperties(String prop) {
-        try (InputStream in = Runner.class.getClassLoader().getResourceAsStream(prop)) {
+    private void initProperties(String prop) {
+        try (InputStream in = DataBase.class.getClassLoader().getResourceAsStream(prop)) {
             properties = new Properties();
             properties.load(in);
         } catch (Exception e) {
             e.fillInStackTrace();
             System.out.println(e.getMessage());
         }
-
     }
 
-    @Override
-    public void close() throws Exception {
-        if (connection != null) {
-            connection.close();
-        }
+    public Connection getConnection() {
+        return connection;
     }
 }

@@ -1,4 +1,4 @@
-package Post;
+package ru;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -6,9 +6,9 @@ import java.util.Objects;
 public class Post {
     private String href;
     private String description;
-    private LocalDateTime createDate;
+    private String createDate;
 
-    public Post(String href, String description, LocalDateTime createDate) {
+    public Post(String href, String description, String createDate) {
         this.href = href;
         this.description = description;
         this.createDate = createDate;
@@ -22,13 +22,13 @@ public class Post {
         return description;
     }
 
-    public LocalDateTime getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
     @Override
     public String toString() {
-        return "Post{"
+        return "ru.Post{"
                 + "href='" + href + '\''
                 + ", description='" + description + '\''
                 + ", createDate=" + createDate
