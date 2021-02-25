@@ -4,11 +4,19 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 public class DataBase implements AutoCloseable {
-    Properties properties;
-    Connection connection;
+    private Properties properties;
+    private Connection connection;
+    private static DataBase dataBase;
 
     private DataBase() {
         initConnection();
+    }
+
+    public DataBase getDataBase() {
+        if (dataBase == null) {
+            dataBase = new DataBase();
+        }
+        return dataBase;
     }
 
     public void initConnection() {
