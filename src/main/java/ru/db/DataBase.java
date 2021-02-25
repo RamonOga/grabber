@@ -1,8 +1,11 @@
 package ru.db;
 
+import ru.Post;
+
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class DataBase {
@@ -29,7 +32,7 @@ public class DataBase {
                     properties.getProperty("login"),
                     properties.getProperty("password"));
         } catch (Exception e) {
-            System.out.println(e.fillInStackTrace());
+            e.fillInStackTrace();
         }
     }
     private void initProperties(String prop) {
@@ -45,4 +48,5 @@ public class DataBase {
     public Connection getConnection() {
         return connection;
     }
+
 }

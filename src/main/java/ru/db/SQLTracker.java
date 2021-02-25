@@ -8,12 +8,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class SQLTracker implements AutoCloseable {
     Connection connection;
+    DataBase dataBase;
 
-    public SQLTracker(Connection conn) {
-        connection = conn;
+    public SQLTracker(String prop) {
+        dataBase = DataBase.getDataBase(prop);
+        connection = dataBase.getConnection();
     }
 
     public List<Post> findAll() {
@@ -23,19 +26,19 @@ public class SQLTracker implements AutoCloseable {
         try {
             while (rs.next()) {
                 rsl.add(new Post(rs.getString("herf"),
-                        rs.getString("descr" +
-                                "") ,
+                        rs.getString("descr") ,
                         rs.getString("date")));
-                }
-            } catch (SQLException sqle) {
+            }
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-            return rsl;
-        }
+        return rsl;
+    }
 
     public boolean addPost (Post post) {
         boolean rsl = false;
-        String query = String.format("insert into posts (herf, descr, date) values ('%s', '%s', '%s');", post.getHref(),
+        String query = String.format("insert into posts (herf, descr, date) values ('%s', '%s', '%s');",
+                post.getHref(),
                 post.getDescription(),
                 post.getCreateDate());
         if (executeQuery(query)) {
@@ -46,7 +49,8 @@ public class SQLTracker implements AutoCloseable {
 
     private ResultSet executeQueryWithResultSet(String query) {
         ResultSet rs = null;
-        try(Statement statement = connection.createStatement()) {
+        try {
+            Statement statement = connection.createStatement();
             statement.execute(query);
             rs = statement.getResultSet();
         } catch (SQLException sqle) {
@@ -79,4 +83,6 @@ public class SQLTracker implements AutoCloseable {
             }
         }
     }
+
+
 }
