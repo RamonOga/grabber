@@ -1,11 +1,6 @@
 package ru.db;
 
-import ru.Post;
-
-import java.io.InputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class DataBase {
@@ -36,13 +31,8 @@ public class DataBase {
         }
     }
     private void initProperties(String prop) {
-        try (InputStream in = DataBase.class.getClassLoader().getResourceAsStream(prop)) {
-            properties = new Properties();
-            properties.load(in);
-        } catch (Exception e) {
-            e.fillInStackTrace();
-            System.out.println(e.getMessage());
-        }
+       PropertiesCreator propertiesCreator = new PropertiesCreator();
+       properties = propertiesCreator.getProperties(prop);
     }
 
     public Connection getConnection() {

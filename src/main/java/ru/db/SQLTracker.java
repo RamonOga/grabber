@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 public class SQLTracker implements AutoCloseable {
     Connection connection;
@@ -44,6 +45,15 @@ public class SQLTracker implements AutoCloseable {
                 post.getCreateDate());
         if (executeQuery(query)) {
             rsl = true;
+        }
+        return rsl;
+    }
+    public boolean addAll(Set<Post> postSet) {
+        boolean rsl = true;
+        for (Post post : postSet) {
+            if (!addPost(post)) {
+                rsl = false;
+            }
         }
         return rsl;
     }
