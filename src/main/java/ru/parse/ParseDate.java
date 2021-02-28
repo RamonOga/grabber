@@ -2,6 +2,7 @@ package ru.parse;
 
 import org.apache.commons.collections.map.HashedMap;
 
+import javax.swing.plaf.PanelUI;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -31,8 +32,15 @@ public class ParseDate {
     public LocalDateTime parse(String dateLine) {
         String[] dateTimeArr = dateLine.split(", ");
         String[] timeArr = dateTimeArr[1].split(":");
-        if (dateTimeArr[0].contains("сегодня") || dateTimeArr[0].contains("вчера")) {
+        if (dateTimeArr[0].contains("сегодня")) {
             LocalDateTime now = LocalDateTime.now();
+            return  LocalDateTime.of(now.getDayOfYear(),
+                    now.getMonthValue(),
+                    now.getDayOfMonth(),
+                    getInt(timeArr[0]),
+                    getInt(timeArr[1]));
+        } else if (dateTimeArr[0].contains("вчера")) {
+            LocalDateTime now = LocalDateTime.now().minusDays(1) ;
             return  LocalDateTime.of(now.getDayOfYear(),
                     now.getMonthValue(),
                     now.getDayOfMonth(),
@@ -41,7 +49,7 @@ public class ParseDate {
         }
         String[] dateArr = dateTimeArr[0].split(" ");
         return LocalDateTime.of(getInt("20" + dateArr[2]),
-                (int) months.get(dateArr[1]),
+                months.get(dateArr[1]),
                 getInt(dateArr[0]),
                 getInt(timeArr[0]),
                 getInt(timeArr[1]));

@@ -12,27 +12,38 @@ import java.util.Set;
 
 public class SqlRuParse {
     private ParseDate parseDate;
+    private Set<Post> postSet;
 
     public SqlRuParse() {
         parseDate = new ParseDate();
+        postSet = new HashSet<>();
     }
 
-    public Set<Post> urlParse(String url, String hrefLink, String dateLink) {
-        Set<Post> rsl = null;
+    private boolean urlParse(String url, String hrefLink, String dateLink) {
+        int setSize = postSet.size();
         try {
             Document document = Jsoup.connect(url).get();
-            rsl = new HashSet<>();
             Elements rowsHref = document.select(hrefLink);
             Elements rowsDates = document.select(dateLink);
             int i = 1;
             for (Element href : rowsHref) {
                 Element date = rowsDates.get(i);
                 i += 2;
-                rsl.add(new Post(href.child(0).attr("href"), href.text(), date.text()));
+                postSet.add(new Post(href.child(0).attr("href"),
+                        href.text(),
+                        parseDate.parse(date.text())));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return rsl;
+        return postSet.size() > setSize;
+    }
+
+    public Set<Post> getPages(String url, String hrefLink, String dateLink, int pages) {
+        for (int i = 1; i <= pages; i++) {
+            urlParse(url + i, hrefLink, dateLink);
+            System.out.println(postSet.size());
+        }
+        return postSet;
     }
 }

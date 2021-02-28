@@ -23,12 +23,11 @@ public class Runner {
         PropertiesCreator propertiesCreator = new PropertiesCreator();
         Properties properties = propertiesCreator
                 .getProperties("parse.properties");
-        Set<Post> postSet = sqlRuParse.urlParse(properties.getProperty("url"),
-                properties.getProperty("href"),
-                properties.getProperty("date"));
+        Set<Post> postSet = sqlRuParse.getPages(properties.getProperty("url"),
+               properties.getProperty("href"),
+                properties.getProperty("date"), 10);
         sqlt.addAll(postSet);
-       // sqlt.findAll().forEach(System.out::println);
+        sqlt.findAll().forEach(System.out::println);
+        System.out.println(sqlt.findAll().size());
     }
-
-
 }

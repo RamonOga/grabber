@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Post {
-    private String href;
-    private String description;
-    private String createDate;
+    private final String href;
+    private final String description;
+    private final LocalDateTime createDate;
 
-    public Post(String href, String description, String createDate) {
+    public Post(String href, String description, LocalDateTime createDate) {
         this.href = href;
         this.description = description;
         this.createDate = createDate;
@@ -23,7 +23,7 @@ public class Post {
     }
 
     public String getCreateDate() {
-        return createDate;
+        return createDate.toString();
     }
 
     @Override

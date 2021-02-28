@@ -1,19 +1,22 @@
 package ru.db;
 
 import ru.Post;
+import ru.parse.ParseDate;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
 public class SQLTracker implements AutoCloseable {
-    Connection connection;
-    DataBase dataBase;
+    private Connection connection;
+    private DataBase dataBase;
+    private ParseDate parseDate;
 
     public SQLTracker(String prop) {
         dataBase = DataBase.getDataBase(prop);
@@ -27,8 +30,8 @@ public class SQLTracker implements AutoCloseable {
         try {
             while (rs.next()) {
                 rsl.add(new Post(rs.getString("herf"),
-                        rs.getString("descr") ,
-                        rs.getString("date")));
+                        rs.getString("descr"),
+                        rs.getObject(4, LocalDateTime.class)));
             }
             rs.close();
         } catch (SQLException sqle) {
@@ -72,7 +75,7 @@ public class SQLTracker implements AutoCloseable {
 
     private boolean executeQuery(String query) {
         boolean rsl = false;
-        try(Statement statement = connection.createStatement();) {
+        try(Statement statement = connection.createStatement()) {
             statement.execute(query);
             if (statement.getUpdateCount() > 0) {
                 rsl = true;
