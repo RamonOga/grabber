@@ -33,21 +33,29 @@ public class ParseDate {
         String[] dateTimeArr = dateLine.split(", ");
         String[] timeArr = dateTimeArr[1].split(":");
         if (dateTimeArr[0].contains("сегодня")) {
-            LocalDateTime now = LocalDateTime.now();
-            return  LocalDateTime.of(now.getDayOfYear(),
-                    now.getMonthValue(),
-                    now.getDayOfMonth(),
-                    getInt(timeArr[0]),
-                    getInt(timeArr[1]));
+            return  getLocalDateTime(LocalDateTime.now(),
+                    timeArr[0],
+                    timeArr[1]);
         } else if (dateTimeArr[0].contains("вчера")) {
-            LocalDateTime now = LocalDateTime.now().minusDays(1) ;
-            return  LocalDateTime.of(now.getDayOfYear(),
-                    now.getMonthValue(),
-                    now.getDayOfMonth(),
-                    getInt(timeArr[0]),
-                    getInt(timeArr[1]));
+            return  getLocalDateTime(LocalDateTime.now().minusDays(1),
+                    timeArr[0],
+                    timeArr[1]);
         }
-        String[] dateArr = dateTimeArr[0].split(" ");
+        return getLocalDateTime(dateTimeArr);
+    }
+
+    private LocalDateTime getLocalDateTime(LocalDateTime localDate,
+                                           String hours, String minutes ) {
+       return LocalDateTime.of(localDate.getDayOfYear(),
+               localDate.getMonthValue(),
+               localDate.getDayOfMonth(),
+               getInt(hours),
+               getInt(minutes));
+    }
+
+    private LocalDateTime getLocalDateTime(String[] dateTime) {
+        String[] dateArr = dateTime[0].split(" ");
+        String[] timeArr = dateTime[1].split(":");
         return LocalDateTime.of(getInt("20" + dateArr[2]),
                 months.get(dateArr[1]),
                 getInt(dateArr[0]),
