@@ -17,11 +17,20 @@ public class Runner {
         PropertiesCreator propertiesCreator = new PropertiesCreator();
         Properties properties = propertiesCreator
                 .getProperties("parse.properties");
-        Set<Post> postSet = sqlRuParse.getPages(properties.getProperty("url"),
+        Document doc = sqlRuParse.getDocument
+                ("https://www.sql.ru/forum/1333854/ishhem-senior-java-developer-udalenno-ot-250k");
+        System.out.println(doc.title());
+        //System.out.println(doc.body().text());
+        Elements els1 = doc.select(".msgBody");
+        Elements els2 = doc.select(".msgFooter");
+        System.out.println(els1.get(1).text());
+        System.out.println(els2.get(0).text().split(" \\[")[0]);
+
+       /* Set<Post> postSet = sqlRuParse.getPages(properties.getProperty("url"),
                properties.getProperty("href"),
                 properties.getProperty("date"), 1);
         sqlt.addAll(postSet);
         sqlt.findAll().forEach(System.out::println);
-        System.out.println(sqlt.findAll().size());
+        System.out.println(sqlt.findAll().size());*/
     }
 }

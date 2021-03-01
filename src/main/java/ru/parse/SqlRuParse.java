@@ -36,12 +36,11 @@ public class SqlRuParse {
             Document document = Jsoup.connect(url).get();
             Elements rowsHref = document.select(hrefLink);
             Elements rowsDates = document.select(dateLink);
-            String title = document.select("title").text();
             int i = 1;
             for (Element href : rowsHref) {
                 Element date = rowsDates.get(i);
                 i += 2;
-                postSet.add(new Post(title,
+                postSet.add(new Post(href.text(),
                         href.child(0).attr("href"),
                         href.text(),
                         parseDate.parse(date.text())));
