@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-public class SQLTracker implements AutoCloseable {
+public class WorkerDB implements AutoCloseable {
     private Connection connection;
     private DataBase dataBase;
     private ParseDate parseDate;
 
-    public SQLTracker(String prop) {
+    public WorkerDB(String prop) {
         dataBase = DataBase.getDataBase(prop);
         connection = dataBase.getConnection();
     }
@@ -29,9 +29,10 @@ public class SQLTracker implements AutoCloseable {
         ResultSet rs = executeQueryWithResultSet(query);
         try {
             while (rs.next()) {
-                rsl.add(new Post(rs.getString("herf"),
+                rsl.add(new Post(rs.getString("title"),
+                        rs.getString("href"),
                         rs.getString("descr"),
-                        rs.getObject(4, LocalDateTime.class)));
+                        rs.getObject(5, LocalDateTime.class)));
             }
             rs.close();
         } catch (SQLException sqle) {
@@ -42,7 +43,8 @@ public class SQLTracker implements AutoCloseable {
 
     public boolean addPost (Post post) {
         boolean rsl = false;
-        String query = String.format("insert into posts (herf, descr, date) values ('%s', '%s', '%s');",
+        String query = String.format("insert into posts (title, href, descr, date) values ('%s', '%s', '%s', '%s');",
+                post.getTitle(),
                 post.getHref(),
                 post.getDescription(),
                 post.getCreateDate());

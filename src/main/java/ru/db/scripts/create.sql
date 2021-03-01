@@ -1,6 +1,7 @@
 create table posts (
     id serial primary key,
-    herf text,
+    title text,
+    href text,
     descr text,
     date timestamp
 );
