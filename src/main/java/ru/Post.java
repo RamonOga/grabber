@@ -4,15 +4,20 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Post {
+
+    private  final String title;
     private final String href;
     private final String description;
     private final LocalDateTime createDate;
 
-    public Post(String href, String description, LocalDateTime createDate) {
+    public Post(String title, String href, String description, LocalDateTime createDate) {
+        this.title = title;
         this.href = href;
         this.description = description;
         this.createDate = createDate;
     }
+
+    public String getTitle() { return title; }
 
     public String getHref() {
         return href;
@@ -26,13 +31,16 @@ public class Post {
         return createDate.toString();
     }
 
+
+
     @Override
     public String toString() {
-        return "ru.Post{"
-                + "href='" + href + '\''
-                + ", description='" + description + '\''
-                + ", createDate=" + createDate
-                + '}';
+        return "Post{" +
+                "title='" + title + '\'' +
+                ", href='" + href + '\'' +
+                ", description='" + description + '\'' +
+                ", createDate=" + createDate +
+                '}';
     }
 
     @Override
@@ -44,13 +52,14 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return Objects.equals(href, post.href)
-                && Objects.equals(description, post.description)
-                && Objects.equals(createDate, post.createDate);
+        return Objects.equals(title, post.title) &&
+                Objects.equals(href, post.href) &&
+                Objects.equals(description, post.description) &&
+                Objects.equals(createDate, post.createDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(href, description, createDate);
+        return Objects.hash(title, href, description, createDate);
     }
 }
