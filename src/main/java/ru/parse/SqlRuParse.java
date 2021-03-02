@@ -6,6 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.Post;
 
+import javax.print.Doc;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,5 +58,18 @@ public class SqlRuParse {
             System.out.println(postSet.size());
         }
         return postSet;
+    }
+
+    public Set<String> getHref(String url, String href) {
+        Set<String> rslList = new HashSet<>();
+        Document document = getDocument(url);
+        Elements els = document.select(href);
+        for (Element el : els) {
+            rslList.add(el.child(0).attr("href"));
+        }
+        return rslList;
+    }
+    public Set<String> getHrefs(String url, String href, int pages) {
+        return null;
     }
 }

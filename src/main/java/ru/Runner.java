@@ -25,6 +25,8 @@ public class Runner {
         Elements els2 = doc.select(".msgFooter");
         System.out.println(els1.get(1).text());
         System.out.println(els2.get(0).text().split(" \\[")[0]);
+        Set<String> setHrefs = sqlRuParse.getHrefs(properties.getProperty("url"), properties.getProperty("href"), 2);
+        setHrefs.forEach(System.out::println);
 
        /* Set<Post> postSet = sqlRuParse.getPages(properties.getProperty("url"),
                properties.getProperty("href"),
