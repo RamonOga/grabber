@@ -1,4 +1,4 @@
-package ru.db;
+package ru;
 
 import ru.Runner;
 
@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class PropertiesCreator {
 
-    public Properties getProperties(String propertiesFile) {
+    public static Properties getProperties(String propertiesFile) {
         Properties properties = null;
         try(InputStream is = Runner.class.getClassLoader().getResourceAsStream(propertiesFile)) {
             properties = new Properties();

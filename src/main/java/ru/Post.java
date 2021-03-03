@@ -35,11 +35,11 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
-                "title='" + title + '\'' +
-                ", href='" + href + '\'' +
-                ", description='" + description + '\'' +
-                ", createDate=" + createDate +
+        return "Post{" + System.lineSeparator() +
+                "title='" + title + '\'' + System.lineSeparator() +
+                "href='" + href + '\'' + System.lineSeparator() +
+                "description='" + description + '\'' + System.lineSeparator() +
+                "createDate=" + createDate + System.lineSeparator() +
                 '}';
     }
 

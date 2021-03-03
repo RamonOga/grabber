@@ -1,0 +1,31 @@
+
+// parse trash
+try {
+        Document document = Jsoup.connect(url).get();
+        Elements rowsHref = document.select(hrefLink);
+        Elements rowsDates = document.select(dateLink);
+        int i = 1;
+        for (Element href : rowsHref) {
+        Element date = rowsDates.get(i);
+        i += 2;
+        postSet.add(new Post(href.text(),
+        href.child(0).attr("href"),
+        href.text(),
+        parseDate.parse(date.text())));
+        }
+        } catch (Exception e) {
+        e.printStackTrace();
+        }
+
+        // runner trash
+        PropertiesCreator propertiesCreator = new PropertiesCreator();
+                Properties properties = propertiesCreator
+                        .getProperties("parse.properties");
+                Document doc = sqlRuParse.getDocument
+                        ("https://www.sql.ru/forum/1333854/ishhem-senior-java-developer-udalenno-ot-250k");
+                System.out.println(doc.title());
+                //System.out.println(doc.body().text());
+                Elements els1 = doc.select(".msgBody");
+                Elements els2 = doc.select(".msgFooter");
+                System.out.println(els1.get(1).text());
+                System.out.println(els2.get(0).text().split(" \\[")[0]);

@@ -30,6 +30,7 @@ public class ParseDate {
     }
 
     public LocalDateTime parse(String dateLine) {
+        dateLine = dateLine.split(" \\[")[0];
         String[] dateTimeArr = dateLine.split(", ");
         String[] timeArr = dateTimeArr[1].split(":");
         if (dateTimeArr[0].contains("сегодня")) {

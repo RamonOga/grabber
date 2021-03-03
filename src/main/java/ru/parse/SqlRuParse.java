@@ -5,21 +5,24 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.Post;
+import ru.PropertiesCreator;
 
-import javax.print.Doc;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 public class SqlRuParse {
     private ParseDate parseDate;
     private Set<Post> postSet;
+    PropertiesCreator propertiesCreator;
 
     public SqlRuParse() {
+        propertiesCreator = new PropertiesCreator();
         parseDate = new ParseDate();
         postSet = new HashSet<>();
     }
+
 
     public Document getDocument(String url) {
         try {
@@ -33,34 +36,25 @@ public class SqlRuParse {
 
     private boolean urlParse(String url, String hrefLink, String dateLink) {
         int setSize = postSet.size();
-        try {
-            Document document = Jsoup.connect(url).get();
-            Elements rowsHref = document.select(hrefLink);
-            Elements rowsDates = document.select(dateLink);
-            int i = 1;
-            for (Element href : rowsHref) {
-                Element date = rowsDates.get(i);
-                i += 2;
-                postSet.add(new Post(href.text(),
-                        href.child(0).attr("href"),
-                        href.text(),
-                        parseDate.parse(date.text())));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Document document = getDocument(url);
+        Elements els1 = document.select(hrefLink);
+        Elements els2 = document.select(dateLink);
+        postSet.add(new Post(document.title(),
+                url,
+                els1.get(1).text(),
+                parseDate.parse(els2.get(0).text().split(" \\[")[0])));
         return postSet.size() > setSize;
     }
 
-    public Set<Post> getPages(String url, String hrefLink, String dateLink, int pages) {
-        for (int i = 1; i <= pages; i++) {
-            urlParse(url + i, hrefLink, dateLink);
-            System.out.println(postSet.size());
+    public Set<Post> getPages(Set<String> urlsSet) {
+        Properties properties = propertiesCreator.getProperties("parse.properties");
+        for (String url : urlsSet) {
+            urlParse(url, properties.getProperty("href"), properties.getProperty("date"));
         }
         return postSet;
     }
 
-    public Set<String> getHref(String url, String href) {
+    private Set<String> getHref(String url, String href) {
         Set<String> rslList = new HashSet<>();
         Document document = getDocument(url);
         Elements els = document.select(href);
@@ -70,6 +64,10 @@ public class SqlRuParse {
         return rslList;
     }
     public Set<String> getHrefs(String url, String href, int pages) {
-        return null;
+        Set<String> hrefsSet = new HashSet<>();
+        for (int i = 1; i <= pages; i++) {
+            hrefsSet.addAll(getHref(url + i, href));
+        }
+        return hrefsSet;
     }
 }
