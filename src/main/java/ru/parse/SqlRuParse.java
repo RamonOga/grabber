@@ -41,7 +41,7 @@ public class SqlRuParse {
         Elements els2 = document.select(dateLink);
         postSet.add(new Post(document.title(),
                 url,
-                els1.get(1).text(),
+                replace(els1.get(1).text()),
                 parseDate.parse(els2.get(0).text().split(" \\[")[0])));
         return postSet.size() > setSize;
     }
@@ -69,5 +69,12 @@ public class SqlRuParse {
             hrefsSet.addAll(getHref(url + i, href));
         }
         return hrefsSet;
+    }
+
+    private String replace(String text) {
+        if (text.contains("'")) {
+           return text.replace("'", ".");
+        }
+        return text;
     }
 }

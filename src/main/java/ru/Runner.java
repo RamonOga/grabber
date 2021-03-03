@@ -15,8 +15,7 @@ public class Runner {
         Properties properties = PropertiesCreator.getProperties("parse.properties");
         Set<String> hrefSet = sqlRuParse.getHrefs(properties.getProperty("url"), properties.getProperty("oldHref"), 5);
         Set<Post> postSet = sqlRuParse.getPages(hrefSet);
-        postSet.stream().filter(a -> a.getDescription().contains("'")).forEach(System.out::println);
         System.out.println(postSet.size());
-        /*sqlt.addAll(postSet);*/
+        sqlt.addAll(postSet);
     }
 }
