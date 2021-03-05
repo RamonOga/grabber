@@ -3,7 +3,7 @@ package ru;
 import java.util.List;
 
 public interface Store {
-    void save(Post post);
+    boolean save(Post post);
 
     List<Post> getAll();
 
