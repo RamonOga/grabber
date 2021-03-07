@@ -67,8 +67,8 @@ public class PsqlStore implements Store, AutoCloseable {
     public Post findById(String id) {
         Post rsl = null;
         String query = String.format("select * from posts where id = %s", id);
-        ResultSet resultSet = executeQueryWithResultSet(query);
-        try {
+
+        try(ResultSet resultSet = executeQueryWithResultSet(query)) {
             resultSet.next();
             rsl = new Post(resultSet.getString("title"),
                     resultSet.getString("href"),
@@ -82,8 +82,8 @@ public class PsqlStore implements Store, AutoCloseable {
 
     private ResultSet executeQueryWithResultSet(String query) {
         ResultSet rs = null;
-        try {
-            Statement statement = connection.createStatement();
+        try(Statement statement = connection.createStatement()) {
+
             statement.execute(query);
             rs = statement.getResultSet();
         } catch (SQLException sqle) {
