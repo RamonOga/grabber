@@ -27,8 +27,8 @@ public class PsqlStore implements Store, AutoCloseable {
     public List<Post> getAll() {
         List<Post> rsl = new ArrayList<>();
         String query = "select * from posts;";
-        ResultSet rs = executeQueryWithResultSet(query);
-        try {
+
+        try(ResultSet rs = executeQueryWithResultSet(query)) {
             while (rs.next()) {
                 rsl.add(new Post(rs.getString("title"),
                         rs.getString("href"),
