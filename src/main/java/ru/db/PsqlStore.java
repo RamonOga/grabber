@@ -1,6 +1,7 @@
 package ru.db;
 
 import ru.Post;
+import ru.Store;
 import ru.parse.ParseDate;
 
 import java.sql.Connection;
@@ -10,20 +11,20 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
-public class WorkerDB implements AutoCloseable {
+public class PsqlStore implements Store, AutoCloseable {
     private Connection connection;
     private DataBase dataBase;
     private ParseDate parseDate;
 
-    public WorkerDB(String prop) {
+    public PsqlStore(String prop) {
         dataBase = DataBase.getDataBase(prop);
         connection = dataBase.getConnection();
     }
 
-    public List<Post> findAll() {
+    @Override
+    public List<Post> getAll() {
         List<Post> rsl = new ArrayList<>();
         String query = "select * from posts;";
         ResultSet rs = executeQueryWithResultSet(query);
@@ -41,7 +42,8 @@ public class WorkerDB implements AutoCloseable {
         return rsl;
     }
 
-    public boolean addPost (Post post) {
+    @Override
+    public boolean save(Post post) {
         boolean rsl = false;
         String query = String.format("insert into posts (title, href, descr, date) values ('%s', '%s', '%s', '%s');",
                 post.getTitle(),
@@ -56,9 +58,24 @@ public class WorkerDB implements AutoCloseable {
     public boolean addAll(Set<Post> postSet) {
         boolean rsl = true;
         for (Post post : postSet) {
-            if (!addPost(post)) {
+            if (!save(post)) {
                 rsl = false;
             }
+        }
+        return rsl;
+    }
+    public Post findById(String id) {
+        Post rsl = null;
+        String query = String.format("select * from posts where id = %s", id);
+        ResultSet resultSet = executeQueryWithResultSet(query);
+        try {
+            resultSet.next();
+            rsl = new Post(resultSet.getString("title"),
+                    resultSet.getString("href"),
+                    resultSet.getString("descr"),
+                    resultSet.getObject(5,LocalDateTime.class));
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
         return rsl;
     }
