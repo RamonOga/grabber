@@ -1,9 +1,10 @@
 package ru;
 
 import java.util.List;
+import java.util.Set;
 
 public interface Parse {
-    List<Post> list(String link);
+    Set<Post> list(String link);
 
     Post detail(String link);
 }
