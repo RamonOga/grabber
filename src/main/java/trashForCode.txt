@@ -29,3 +29,32 @@ try {
                 Elements els2 = doc.select(".msgFooter");
                 System.out.println(els1.get(1).text());
                 System.out.println(els2.get(0).text().split(" \\[")[0]);
+
+
+ // from PsqlStore
+
+     private boolean executeQuery(PreparedStatement statement) {
+         boolean rsl = false;
+         try {
+             statement.executeUpdate();
+             if (statement.getUpdateCount() > 0) {
+                 rsl = true;
+             }
+         } catch (SQLException sqle) {
+             sqle.fillInStackTrace();
+             System.out.println(sqle.getMessage());
+         }
+         return rsl;
+     }
+
+        private ResultSet executeQueryWithResultSet(String query) {
+             ResultSet rs = null;
+             try {
+                 Statement statement = connection.createStatement();
+                 statement.execute(query);
+                 rs = statement.getResultSet();
+             } catch (SQLException sqle) {
+                 sqle.fillInStackTrace();
+             }
+             return rs;
+         }

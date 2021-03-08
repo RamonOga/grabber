@@ -1,7 +1,5 @@
 package ru.db;
 
-import ru.PropertiesCreator;
-
 import java.sql.*;
 import java.util.Properties;
 
@@ -10,12 +8,12 @@ public class DataBase {
     private Properties properties;
     private Connection connection;
 
-    private DataBase(String propertiesPath) {
-        initProperties(propertiesPath);
+    private DataBase(Properties properties) {
+        initProperties(properties);
         initConnection();
     }
 
-    public static DataBase getDataBase(String propertiesPath) {
+    public static DataBase getDataBase(Properties propertiesPath) {
         if (dataBase == null) {
             dataBase = new DataBase(propertiesPath);
         }
@@ -32,8 +30,8 @@ public class DataBase {
             e.fillInStackTrace();
         }
     }
-    private void initProperties(String prop) {
-       properties = PropertiesCreator.getProperties(prop);
+    private void initProperties(Properties prop) {
+       properties = prop;
     }
 
     public Connection getConnection() {

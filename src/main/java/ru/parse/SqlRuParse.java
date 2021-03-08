@@ -62,6 +62,7 @@ public class SqlRuParse implements Parse {
             String s = el.child(0).attr("href");
             detail(s);
         }
+        System.out.println("List");
         return postSet;
     }
     public Set<Post> getHrefs(String url, int pages) {
@@ -69,6 +70,7 @@ public class SqlRuParse implements Parse {
             String u = url + i;
             list(u);
         }
+        System.out.println("getHrefs");
         return postSet;
     }
 
