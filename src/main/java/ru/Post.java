@@ -27,8 +27,8 @@ public class Post {
         return description;
     }
 
-    public String getCreateDate() {
-        return createDate.toString();
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
 

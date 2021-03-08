@@ -46,7 +46,7 @@ public class PsqlStore implements Store, AutoCloseable {
             statement.setString(2, post.getHref());
             statement.setString(3, post.getDescription());
             statement.setObject(4, post.getCreateDate());
-
+            statement.executeUpdate();
             if (statement.executeUpdate() > 0) {
                 rsl = true;
             }
@@ -72,7 +72,8 @@ public class PsqlStore implements Store, AutoCloseable {
         Post rsl = null;
         String query = "select * from posts where id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, id);
+            statement.setInt(1,Integer.parseInt(id));
+            statement.executeQuery();
             try (ResultSet resultSet = statement.getResultSet()) {
                 resultSet.next();
                 rsl = new Post(resultSet.getString("title"),
