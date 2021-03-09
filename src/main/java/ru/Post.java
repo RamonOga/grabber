@@ -19,8 +19,9 @@ public class Post {
         this.createDate = createDate;
     }
 
-
-    public String getTitle() { return title; }
+    public String getTitle() {
+        return title;
+    }
 
     public String getHref() {
         return href;
@@ -34,16 +35,14 @@ public class Post {
         return createDate;
     }
 
-
-
     @Override
     public String toString() {
-        return "Post{" + System.lineSeparator() +
-                "title='" + title + '\'' + System.lineSeparator() +
-                "href='" + href + '\'' + System.lineSeparator() +
-                "description='" + description + '\'' + System.lineSeparator() +
-                "createDate=" + createDate + System.lineSeparator() +
-                '}';
+        return "Post{"
+                + "title='" + title + '\'' + System.lineSeparator()
+                + "href='" + href + '\'' + System.lineSeparator()
+                + "description='" + description + '\'' + System.lineSeparator()
+                + "createDate=" + createDate + System.lineSeparator()
+                + '}';
     }
 
     @Override
@@ -55,10 +54,10 @@ public class Post {
             return false;
         }
         Post post = (Post) o;
-        return Objects.equals(title, post.title) &&
-                Objects.equals(href, post.href) &&
-                Objects.equals(description, post.description) &&
-                Objects.equals(createDate, post.createDate);
+        return Objects.equals(title, post.title)
+                && Objects.equals(href, post.href)
+                && Objects.equals(description, post.description)
+                && Objects.equals(createDate, post.createDate);
     }
 
     @Override

@@ -10,7 +10,7 @@ public class PropertiesCreator {
 
     public static Properties getProperties(String propertiesFile) {
         Properties properties = null;
-        try(InputStream is = Runner.class.getClassLoader().getResourceAsStream(propertiesFile)) {
+        try (InputStream is = Runner.class.getClassLoader().getResourceAsStream(propertiesFile)) {
             properties = new Properties();
             properties.load(is);
         } catch (IOException ioe) {

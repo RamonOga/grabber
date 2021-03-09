@@ -59,7 +59,7 @@ public class AlertRabbit {
         public void execute(JobExecutionContext context) throws JobExecutionException {
             System.out.println("Rabbit runs here ...");
             Connection conn = (Connection) context.getJobDetail().getJobDataMap().get("store");
-            try(Statement stat = conn.createStatement()) {
+            try (Statement stat = conn.createStatement()) {
 
                 String query = String.format("insert into rabbit (create_date) values ('%s')",
                         System.currentTimeMillis());

@@ -24,8 +24,6 @@ public class SqlRuParse implements Parse {
         postSet = new ArrayList<>();
     }
 
-
-
     public Document getDocument(String url) {
         try {
           return Jsoup.connect(url).get();
@@ -59,6 +57,7 @@ public class SqlRuParse implements Parse {
         }
         return postSet;
     }
+
     public List<Post> getHrefs(String url, int pages) {
         for (int i = 1; i <= pages; i++) {
             String u = url + i;

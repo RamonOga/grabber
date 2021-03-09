@@ -30,6 +30,7 @@ public class DataBase {
             e.fillInStackTrace();
         }
     }
+
     private void initProperties(Properties prop) {
        properties = prop;
     }

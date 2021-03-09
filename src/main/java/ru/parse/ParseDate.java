@@ -46,7 +46,7 @@ public class ParseDate {
     }
 
     private LocalDateTime getLocalDateTime(LocalDateTime localDate,
-                                           String hours, String minutes ) {
+                                           String hours, String minutes) {
        return LocalDateTime.of(localDate.getDayOfYear(),
                localDate.getMonthValue(),
                localDate.getDayOfMonth(),

@@ -23,7 +23,7 @@ public class PsqlStore implements Store, AutoCloseable {
     public List<Post> getAll() {
         List<Post> rsl = new ArrayList<>();
         String query = "select * from posts;";
-        try(PreparedStatement statement = connection.prepareStatement(query);
+        try (PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.getResultSet()) {
             while (rs.next()) {
                 rsl.add(new Post(rs.getInt("id"),
@@ -42,7 +42,7 @@ public class PsqlStore implements Store, AutoCloseable {
     public boolean save(Post post) {
         boolean rsl = false;
         String query = "insert into posts (title, href, descr, date) values (?, ?, ?, ?)";
-        try(PreparedStatement statement = connection.prepareStatement(query);) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getHref());
             statement.setString(3, post.getDescription());
@@ -73,7 +73,7 @@ public class PsqlStore implements Store, AutoCloseable {
         Post rsl = null;
         String query = "select * from posts where id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1,Integer.parseInt(id));
+            statement.setInt(1, Integer.parseInt(id));
             statement.executeQuery();
             try (ResultSet resultSet = statement.getResultSet()) {
                 resultSet.next();
