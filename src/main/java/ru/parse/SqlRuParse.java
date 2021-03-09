@@ -9,19 +9,19 @@ import ru.Post;
 import ru.PropertiesCreator;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 public class SqlRuParse implements Parse {
     private ParseDate parseDate;
-    private Set<Post> postSet;
+    private List<Post> postSet;
+    private int listSize;
     private Properties properties;
 
     public SqlRuParse() {
+        listSize = 0;
         properties = PropertiesCreator.getProperties("parse.properties");
         parseDate = new ParseDate();
-        postSet = new HashSet<>();
+        postSet = new ArrayList<>();
     }
 
 
@@ -40,7 +40,9 @@ public class SqlRuParse implements Parse {
         Document document = getDocument(url);
         Elements els1 = document.select(properties.getProperty("href"));
         Elements els2 = document.select(properties.getProperty("date"));
-        Post rsl = new Post(document.title(),
+        listSize++;
+        Post rsl = new Post(listSize,
+                document.title(),
                 url,
                 replace(els1.get(1).text()),
                 parseDate.parse(els2.get(0).text().split(" \\[")[0]));
@@ -48,14 +50,7 @@ public class SqlRuParse implements Parse {
         return rsl;
     }
 
-    /*public Set<Post> getPages(Set<String> urlsSet) {
-        for (String url : urlsSet) {
-            detail(url);
-        }
-        return postSet;
-    }*/
-
-    public Set<Post> list(String url) {
+    public List<Post> list(String url) {
         Document document = getDocument(url);
         Elements els = document.select(properties.getProperty("oldHref"));
         for (Element el : els) {
@@ -64,7 +59,7 @@ public class SqlRuParse implements Parse {
         }
         return postSet;
     }
-    public Set<Post> getHrefs(String url, int pages) {
+    public List<Post> getHrefs(String url, int pages) {
         for (int i = 1; i <= pages; i++) {
             String u = url + i;
             list(u);

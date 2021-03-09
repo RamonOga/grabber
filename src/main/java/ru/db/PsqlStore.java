@@ -26,7 +26,8 @@ public class PsqlStore implements Store, AutoCloseable {
         try(PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.getResultSet()) {
             while (rs.next()) {
-                rsl.add(new Post(rs.getString("title"),
+                rsl.add(new Post(rs.getInt("id"),
+                        rs.getString("title"),
                         rs.getString("href"),
                         rs.getString("descr"),
                         rs.getObject(5, LocalDateTime.class)));
@@ -58,7 +59,7 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     @Override
-    public boolean addAll(Set<Post> postSet) {
+    public boolean addAll(List<Post> postSet) {
         boolean rsl = true;
         for (Post post : postSet) {
             if (!save(post)) {
@@ -76,7 +77,8 @@ public class PsqlStore implements Store, AutoCloseable {
             statement.executeQuery();
             try (ResultSet resultSet = statement.getResultSet()) {
                 resultSet.next();
-                rsl = new Post(resultSet.getString("title"),
+                rsl = new Post(resultSet.getInt("id"),
+                        resultSet.getString("title"),
                         resultSet.getString("href"),
                         resultSet.getString("descr"),
                         resultSet.getObject(5, LocalDateTime.class));
