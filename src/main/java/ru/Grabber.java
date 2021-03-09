@@ -47,13 +47,15 @@ public class Grabber implements Grab {
 
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
+            System.out.println("Start");
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
-            Parse parse = (Parse) map.get("store");
-            Set<Post> setPosts = parse
-                    .list(PropertiesCreator.getProperties("app.properties")
+            Parse parse = (Parse) map.get("parse");
+            Set<Post> setPosts = parse.list(PropertiesCreator
+                    .getProperties("parse.properties")
                     .getProperty("url"));
             store.addAll(setPosts);
+            System.out.println("finish");
         }
     }
 
