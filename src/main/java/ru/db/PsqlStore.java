@@ -24,19 +24,19 @@ public class PsqlStore implements Store, AutoCloseable {
         List<Post> rsl = new ArrayList<>();
         String query = "select * from posts;";
         try (PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet rs = statement.getResultSet()) {
-            while (rs.next()) {
-                rsl.add(new Post(rs.getInt("id"),
-                        rs.getString("title"),
-                        rs.getString("href"),
-                        rs.getString("descr"),
-                        rs.getObject(5, LocalDateTime.class)));
-            }
-        } catch (SQLException sqle) {
+             ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    rsl.add(new Post(rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getString("href"),
+                            rs.getString("descr"),
+                            rs.getObject(5, LocalDateTime.class)));
+                }
+          } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
         return rsl;
-    }
+}
 
     @Override
     public boolean save(Post post) {
