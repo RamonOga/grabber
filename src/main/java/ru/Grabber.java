@@ -5,6 +5,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import ru.db.PsqlStore;
 import ru.parse.SqlRuParse;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class Grabber implements Grab {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            Set<Post> setPosts = parse.list(PropertiesCreator
+            List<Post> setPosts = parse.list(PropertiesCreator
                     .getProperties("parse.properties")
                     .getProperty("url"));
             store.addAll(setPosts);

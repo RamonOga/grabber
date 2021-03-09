@@ -1,4 +1,3 @@
-select * from posts;
 drop table posts;
 create table posts (
                        id serial primary key,

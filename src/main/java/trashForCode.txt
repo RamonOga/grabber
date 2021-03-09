@@ -58,3 +58,13 @@ try {
              }
              return rs;
          }
+
+
+from sql parse
+
+  /*public Set<Post> getPages(Set<String> urlsSet) {
+        for (String url : urlsSet) {
+            detail(url);
+        }
+        return postSet;
+    }*/
