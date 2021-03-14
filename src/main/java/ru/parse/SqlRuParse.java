@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.Parse;
 import ru.Post;
-import ru.PropertiesCreator;
 
 import java.io.IOException;
 import java.util.*;
@@ -17,9 +16,9 @@ public class SqlRuParse implements Parse {
     private int listSize;
     private Properties properties;
 
-    public SqlRuParse() {
+    public SqlRuParse(Properties prop) {
         listSize = 0;
-        properties = PropertiesCreator.getProperties("parse.properties");
+        properties = prop;
         parseDate = new ParseDate();
         postSet = new ArrayList<>();
     }

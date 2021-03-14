@@ -18,7 +18,7 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 public class Grabber implements Grab {
-    private final Properties cfg = PropertiesCreator.getProperties("app.properties");
+    private static final Properties cfg = PropertiesCreator.getProperties("app.properties");
 
     public Store store() {
         return new PsqlStore(cfg);
@@ -89,7 +89,7 @@ public class Grabber implements Grab {
         Grabber grab = new Grabber();
         Scheduler scheduler = grab.scheduler();
         Store store = grab.store();
-        grab.init(new SqlRuParse(), store, scheduler);
+        grab.init(new SqlRuParse(cfg), store, scheduler);
         grab.web(store);
     }
 }
